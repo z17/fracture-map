@@ -26,6 +26,7 @@ function App() {
   return (
     <div className="app">
       <h1>Карта переломов</h1>
+      <p className="subtitle">Отмечай свои боевые и делись с друзьями</p>
 
       <div className="selected-bone-info">
         {selectedBoneName
