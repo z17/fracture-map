@@ -3,7 +3,7 @@ import { useLanguage } from '../../i18n';
 import styles from './Skeleton.module.css';
 
 // Whitelist of anatomical bones/groups that can be selected
-const ANATOMICAL_BONES = new Set([
+export const ANATOMICAL_BONES = new Set([
   // Head
   'Skull', 'Cranium', 'Mandible',
   // Spine
@@ -50,11 +50,13 @@ interface SkeletonSVGProps {
 export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
   selectedBoneId,
   onBoneClick,
+  bonesWithInjuries,
 }) => {
   const { t } = useLanguage();
   const [svgContent, setSvgContent] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
   const selectedElementRef = useRef<Element | null>(null);
+  const injuredElementsRef = useRef<Set<Element>>(new Set());
 
   useEffect(() => {
     fetch('/skeleton.svg')
@@ -81,7 +83,7 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
     return containerRef.current.querySelector(`#${CSS.escape(id)}`);
   }, []);
 
-  const applySelectionStyles = useCallback((element: Element | null, selected: boolean) => {
+  const applyStyles = useCallback((element: Element | null, state: 'normal' | 'selected' | 'injured') => {
     if (!element) return;
 
     const shapes = element.tagName === 'path' || element.tagName === 'g'
@@ -90,12 +92,20 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
 
     shapes.forEach(shape => {
       const shapeEl = shape as SVGElement;
-      if (selected) {
+      if (state === 'selected') {
+        // Blue for selected
         shapeEl.style.fill = '#60a5fa';
         shapeEl.style.stroke = '#1d4ed8';
         shapeEl.style.strokeWidth = '2';
         shapeEl.style.filter = 'drop-shadow(0 0 8px rgba(37,99,235,0.6))';
+      } else if (state === 'injured') {
+        // Red/orange for injured but not selected
+        shapeEl.style.fill = '#f87171';
+        shapeEl.style.stroke = '#dc2626';
+        shapeEl.style.strokeWidth = '1.5';
+        shapeEl.style.filter = '';
       } else {
+        // Normal state
         shapeEl.style.fill = '';
         shapeEl.style.stroke = '';
         shapeEl.style.strokeWidth = '';
@@ -104,23 +114,55 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
     });
   }, []);
 
+  // Apply styles for injured bones
   useEffect(() => {
     if (!svgContent || !containerRef.current) return;
 
+    // Reset previously injured elements
+    injuredElementsRef.current.forEach(element => {
+      if (element !== selectedElementRef.current) {
+        applyStyles(element, 'normal');
+      }
+    });
+    injuredElementsRef.current.clear();
+
+    // Apply injured styles to bones with injuries (except selected one)
+    bonesWithInjuries.forEach(boneId => {
+      if (boneId !== selectedBoneId) {
+        const element = getElementGroup(boneId);
+        if (element) {
+          applyStyles(element, 'injured');
+          injuredElementsRef.current.add(element);
+        }
+      }
+    });
+  }, [svgContent, bonesWithInjuries, selectedBoneId, applyStyles, getElementGroup]);
+
+  // Apply styles for selected bone
+  useEffect(() => {
+    if (!svgContent || !containerRef.current) return;
+
+    // Reset previous selection
     if (selectedElementRef.current) {
-      applySelectionStyles(selectedElementRef.current, false);
+      const prevId = selectedElementRef.current.id;
+      if (bonesWithInjuries.has(prevId)) {
+        applyStyles(selectedElementRef.current, 'injured');
+      } else {
+        applyStyles(selectedElementRef.current, 'normal');
+      }
     }
 
+    // Apply selected style
     if (selectedBoneId) {
       const element = getElementGroup(selectedBoneId);
       if (element) {
-        applySelectionStyles(element, true);
+        applyStyles(element, 'selected');
         selectedElementRef.current = element;
       }
     } else {
       selectedElementRef.current = null;
     }
-  }, [svgContent, selectedBoneId, applySelectionStyles, getElementGroup]);
+  }, [svgContent, selectedBoneId, bonesWithInjuries, applyStyles, getElementGroup]);
 
   useEffect(() => {
     if (!svgContent || !containerRef.current) return;
