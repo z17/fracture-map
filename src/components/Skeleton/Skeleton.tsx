@@ -3,11 +3,11 @@ import { SkeletonSVG } from './SkeletonSVG';
 import styles from './Skeleton.module.css';
 
 interface SkeletonProps {
-  /** ID выбранной кости */
+  /** Selected bone ID */
   selectedBoneId: BoneId | null;
-  /** Callback при клике на кость */
-  onBoneClick: (boneId: BoneId) => void;
-  /** Set с ID костей, у которых есть травмы */
+  /** Callback when a bone is clicked */
+  onBoneClick: (boneId: BoneId | null) => void;
+  /** Set of bone IDs that have injuries */
   bonesWithInjuries: Set<BoneId>;
 }
 
