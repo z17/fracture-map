@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '../../i18n';
 import type { Injury, BoneId, InjuryFormData } from '../../types';
 import { getBoneName } from '../Skeleton/SkeletonSVG';
 import styles from './InjuryList.module.css';
@@ -9,16 +10,6 @@ interface InjuryListProps {
   onRemove: (injuryId: string) => void;
   onUpdate: (injuryId: string, data: InjuryFormData) => void;
   onBoneSelect: (boneId: BoneId) => void;
-}
-
-const MONTHS = [
-  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-];
-
-function formatDate(isoDate: string): string {
-  const [year, month] = isoDate.split('-');
-  return `${MONTHS[parseInt(month, 10) - 1]} ${year}`;
 }
 
 const currentYear = new Date().getFullYear();
@@ -34,10 +25,16 @@ function toISODate(month: number, year: number): string {
 }
 
 export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBoneSelect }: InjuryListProps) {
+  const { t, months } = useLanguage();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDescription, setEditDescription] = useState('');
   const [editMonth, setEditMonth] = useState(1);
   const [editYear, setEditYear] = useState(currentYear);
+
+  const formatDate = (isoDate: string): string => {
+    const [year, month] = isoDate.split('-');
+    return `${months[parseInt(month, 10) - 1]} ${year}`;
+  };
 
   const startEditing = (injury: Injury) => {
     const { month, year } = parseISODate(injury.date);
@@ -64,8 +61,8 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
   if (injuries.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>Травм пока нет</p>
-        <p className={styles.hint}>Выберите кость и добавьте травму</p>
+        <p>{t('noInjuries')}</p>
+        <p className={styles.hint}>{t('selectBoneAndAdd')}</p>
       </div>
     );
   }
@@ -82,8 +79,8 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
 
   return (
     <div className={styles.list}>
-      <h3 className={styles.title}>История травм ({injuries.length})</h3>
-      
+      <h3 className={styles.title}>{t('injuryHistory')} ({injuries.length})</h3>
+
       {sortedInjuries.map((injury) => {
         const isHighlighted = injury.boneId === selectedBoneId;
         const isEditing = editingId === injury.id;
@@ -107,7 +104,7 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
                 />
                 <div className={styles.editDateRow}>
                   <select value={editMonth} onChange={(e) => setEditMonth(Number(e.target.value))}>
-                    {MONTHS.map((name, index) => (
+                    {months.map((name, index) => (
                       <option key={index} value={index + 1}>{name}</option>
                     ))}
                   </select>
@@ -118,8 +115,8 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
                   </select>
                 </div>
                 <div className={styles.editActions}>
-                  <button className={styles.saveButton} onClick={saveEditing}>Сохранить</button>
-                  <button className={styles.cancelButton} onClick={cancelEditing}>Отмена</button>
+                  <button className={styles.saveButton} onClick={saveEditing}>{t('save')}</button>
+                  <button className={styles.cancelButton} onClick={cancelEditing}>{t('cancel')}</button>
                 </div>
               </div>
             ) : (
@@ -136,7 +133,7 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
                       e.stopPropagation();
                       startEditing(injury);
                     }}
-                    aria-label="Редактировать травму"
+                    aria-label={t('editInjury')}
                   >
                     ✎
                   </button>
@@ -146,7 +143,7 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
                       e.stopPropagation();
                       onRemove(injury.id);
                     }}
-                    aria-label="Удалить травму"
+                    aria-label={t('deleteInjury')}
                   >
                     ✕
                   </button>

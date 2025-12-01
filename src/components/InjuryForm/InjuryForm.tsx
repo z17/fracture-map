@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '../../i18n';
 import type { InjuryFormData } from '../../types';
 import styles from './InjuryForm.module.css';
 
@@ -6,11 +7,6 @@ interface InjuryFormProps {
   boneName: string;
   onSubmit: (data: InjuryFormData) => void;
 }
-
-const MONTHS = [
-  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-];
 
 const currentYear = new Date().getFullYear();
 const currentMonth = new Date().getMonth() + 1;
@@ -21,6 +17,7 @@ function toISODate(month: number, year: number): string {
 }
 
 export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
+  const { t, months } = useLanguage();
   const [description, setDescription] = useState('');
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
@@ -39,13 +36,13 @@ export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h3 className={styles.title}>Добавить травму: {boneName}</h3>
-      
+      <h3 className={styles.title}>{t('addInjury')}: {boneName}</h3>
+
       <div className={styles.field}>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Описание травмы"
+          placeholder={t('injuryDescription')}
           rows={2}
           required
         />
@@ -56,7 +53,7 @@ export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
           value={month}
           onChange={(e) => setMonth(Number(e.target.value))}
         >
-          {MONTHS.map((name, index) => (
+          {months.map((name, index) => (
             <option key={index} value={index + 1}>
               {name}
             </option>
@@ -76,7 +73,7 @@ export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
       </div>
 
       <button type="submit" className={styles.submitButton}>
-        Добавить травму
+        {t('addInjuryButton')}
       </button>
     </form>
   );
