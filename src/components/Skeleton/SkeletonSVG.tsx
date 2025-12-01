@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useLanguage } from '../../i18n';
 import styles from './Skeleton.module.css';
 
 export function getBoneName(id: string): string {
@@ -15,12 +16,13 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
   selectedBoneId,
   onBoneClick,
 }) => {
+  const { t } = useLanguage();
   const [svgContent, setSvgContent] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
   const selectedElementRef = useRef<Element | null>(null);
 
   useEffect(() => {
-    fetch('https://upload.wikimedia.org/wikipedia/commons/d/df/Human_skeleton_front_-_no_labels.svg')
+    fetch('/skeleton.svg')
       .then(response => response.text())
       .then(svg => {
         setSvgContent(svg);
@@ -119,7 +121,7 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
   };
 
   if (!svgContent) {
-    return <div className={styles.loading}>Загрузка скелета...</div>;
+    return <div className={styles.loading}>{t('loadingSkeleton')}</div>;
   }
 
   return (
