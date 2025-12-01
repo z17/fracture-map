@@ -2,6 +2,36 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useLanguage } from '../../i18n';
 import styles from './Skeleton.module.css';
 
+const ANATOMICAL_BONES = new Set([
+  // Голова (3)
+  'Skull', 'Cranium', 'Mandible',
+  // Позвоночник (5)
+  'CervicalVertebrae', 'ThoracicVertebrae', 'LumbarVertebrae', 'Sacrum', 'Coccyx',
+  // Грудная клетка (4)
+  'Sternum', 'Manubrium', 'Scapula', 'ClavicleLeft', 'ClavicleRight',
+  // Руки (6)
+  'HumerusLeft', 'HumerusRight',
+  'RadiusLeft', 'RadiusRight',
+  'UlnaLeft', 'UlnaRight',
+  // Кисти (8)
+  'HandLeft', 'HandRight',
+  'CarpalsLeft', 'CarpalsRight',
+  'MetacarpalsLeft', 'MetacarpalsRight',
+  'PhalangesLeft', 'PhalangesRight',
+  // Таз (1)
+  'PelvicGirdle',
+  // Ноги (7)
+  'FemurLeft', 'FemurRight',
+  'PatellaLeft', 'PatellaRight',
+  'TibiaLeft', 'TibiaRight',
+  'FibulaLeft', 'FibulaRight',
+  // Стопы (8)
+  'FootLeft', 'FootRight',
+  'TarsalsLeft', 'TarsalsRight',
+  'MetatarsalsLeft', 'MetatarsalsRight',
+  'PhalangesFootLeft', 'PhalangesFootRight',
+]);
+
 export function getBoneName(id: string): string {
   return id;
 }
@@ -30,22 +60,15 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
       .catch(err => console.error('Failed to load skeleton SVG:', err));
   }, []);
 
-  const getElementId = useCallback((element: Element): string => {
+  const getElementId = useCallback((element: Element): string | null => {
     let current: Element | null = element;
-    while (current) {
-      if (current.id &&
-          !current.id.startsWith('_') &&
-          current.id !== 'Skeleton' &&
-          current.id !== 'Layer_1' &&
-          current.id !== 'layer1' &&
-          current.id !== 'layer3' &&
-          current.id !== 'layer4' &&
-          current.tagName !== 'svg') {
+    while (current && current.tagName !== 'svg') {
+      if (current.id && ANATOMICAL_BONES.has(current.id)) {
         return current.id;
       }
       current = current.parentElement;
     }
-    return `element-${Array.from(document.querySelectorAll('path, g')).indexOf(element)}`;
+    return null;
   }, []);
 
   const getElementGroup = useCallback((id: string): Element | null => {
