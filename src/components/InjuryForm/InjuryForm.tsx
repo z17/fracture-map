@@ -13,11 +13,16 @@ const MONTHS = [
 ];
 
 const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth() + 1;
 const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
+
+function toISODate(month: number, year: number): string {
+  return `${year}-${String(month).padStart(2, '0')}`;
+}
 
 export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
   const [description, setDescription] = useState('');
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,8 +31,7 @@ export function InjuryForm({ boneName, onSubmit }: InjuryFormProps) {
 
     onSubmit({
       description: description.trim(),
-      month,
-      year,
+      date: toISODate(month, year),
     });
 
     setDescription('');

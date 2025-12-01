@@ -38,6 +38,11 @@
   border-radius: 8px;
   border: 2px solid transparent;
   transition: all 0.2s;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: #f3f4f6;
 }
 
 .item:last-child {
@@ -51,9 +56,8 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .boneName {
@@ -74,10 +78,16 @@
   padding-right: 2rem;
 }
 
-.removeButton {
+.actions {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.editButton,
+.removeButton {
   width: 24px;
   height: 24px;
   padding: 0;
@@ -93,8 +103,86 @@
   justify-content: center;
 }
 
+.editButton:hover {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
 .removeButton:hover {
   background: #fee2e2;
   color: #dc2626;
+}
+
+.item.editing {
+  cursor: default;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.editForm textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.editForm textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.editDateRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editDateRow select {
+  flex: 1;
+  padding: 0.4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.saveButton,
+.cancelButton {
+  flex: 1;
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveButton {
+  background: #3b82f6;
+  color: white;
+}
+
+.saveButton:hover {
+  background: #2563eb;
+}
+
+.cancelButton {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.cancelButton:hover {
+  background: #d1d5db;
 }
 

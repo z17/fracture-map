@@ -9,9 +9,9 @@ import './App.css';
 
 function App() {
   const [selectedBoneId, setSelectedBoneId] = useState<BoneId | null>(null);
-  const { injuries, addInjury, removeInjury, bonesWithInjuries } = useInjuries();
+  const { injuries, addInjury, removeInjury, updateInjury, bonesWithInjuries } = useInjuries();
 
-  const handleBoneClick = (boneId: BoneId) => {
+  const handleBoneClick = (boneId: BoneId | null) => {
     setSelectedBoneId(boneId);
   };
 
@@ -55,6 +55,8 @@ function App() {
             injuries={injuries}
             selectedBoneId={selectedBoneId}
             onRemove={removeInjury}
+            onUpdate={updateInjury}
+            onBoneSelect={handleBoneClick}
           />
         </div>
       </div>

@@ -10,13 +10,11 @@ export interface Injury {
   id: string;
   boneId: BoneId;
   description: string;
-  month: number;
-  year: number;
+  date: string; // ISO format "YYYY-MM"
 }
 
 export interface InjuryFormData {
   description: string;
-  month: number;
-  year: number;
+  date: string; // ISO format "YYYY-MM"
 }
 
