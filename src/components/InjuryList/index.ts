@@ -1,0 +1,2 @@
+export { InjuryList } from './InjuryList';
+
