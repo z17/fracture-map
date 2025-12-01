@@ -13,14 +13,21 @@ export function useInjuries() {
       id: generateId(),
       boneId,
       description: data.description,
-      month: data.month,
-      year: data.year,
+      date: data.date,
     };
     setInjuries(prev => [...prev, newInjury]);
   }, []);
 
   const removeInjury = useCallback((injuryId: string) => {
     setInjuries(prev => prev.filter(injury => injury.id !== injuryId));
+  }, []);
+
+  const updateInjury = useCallback((injuryId: string, data: InjuryFormData) => {
+    setInjuries(prev => prev.map(injury =>
+      injury.id === injuryId
+        ? { ...injury, description: data.description, date: data.date }
+        : injury
+    ));
   }, []);
 
   const getInjuriesByBone = useCallback(
@@ -45,6 +52,7 @@ export function useInjuries() {
     injuries,
     addInjury,
     removeInjury,
+    updateInjury,
     getInjuriesByBone,
     bonesWithInjuries,
     hasBoneInjury,

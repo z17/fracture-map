@@ -7,14 +7,13 @@ export function getBoneName(id: string): string {
 
 interface SkeletonSVGProps {
   selectedBoneId: string | null;
-  onBoneClick: (boneId: string) => void;
+  onBoneClick: (boneId: string | null) => void;
   bonesWithInjuries: Set<string>;
 }
 
 export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
   selectedBoneId,
   onBoneClick,
-  bonesWithInjuries,
 }) => {
   const [svgContent, setSvgContent] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -100,13 +99,17 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
     const allPaths = container.querySelectorAll('path');
 
     allPaths.forEach(path => {
-      (path as HTMLElement).style.cursor = 'pointer';
+      (path as SVGElement).style.cursor = 'pointer';
     });
   }, [svgContent]);
 
   const handleClick = (e: React.MouseEvent) => {
     const target = e.target as Element;
-    if (target.tagName === 'rect' || target.tagName === 'svg') return;
+
+    if (target.tagName === 'rect' || target.tagName === 'svg') {
+      onBoneClick(null);
+      return;
+    }
 
     const id = getElementId(target);
     if (id) {
