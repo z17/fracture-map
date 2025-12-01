@@ -12,8 +12,14 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ selectedBoneId, onBoneClick, bonesWithInjuries }: SkeletonProps) {
+  const handleContainerClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onBoneClick(null);
+    }
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleContainerClick}>
       <SkeletonSVG
         selectedBoneId={selectedBoneId}
         onBoneClick={onBoneClick}

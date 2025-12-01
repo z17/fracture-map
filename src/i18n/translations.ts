@@ -3,10 +3,10 @@ export type Language = 'en' | 'ru';
 export const translations = {
   en: {
     title: 'Fracture Map',
-    subtitle: 'Mark your battle scars and share with friends',
+    subtitle: 'Mark your scars and share with friends',
     selected: 'Selected',
     selectBoneHint: 'Click on a bone to select',
-    
+
     addInjury: 'Add injury',
     injuryDescription: 'Injury description',
     addInjuryButton: 'Add injury',
@@ -18,6 +18,13 @@ export const translations = {
     editInjury: 'Edit injury',
     deleteInjury: 'Delete injury',
     loadingSkeleton: 'Loading skeleton...',
+
+    statsTitle: 'Statistics',
+    totalInjuries: 'Total injuries',
+    bonesInjured: 'Bones injured',
+    percentInjured: 'Percent injured',
+    outOf: 'of',
+
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -25,7 +32,7 @@ export const translations = {
   },
   ru: {
     title: 'Карта переломов',
-    subtitle: 'Отмечай свои боевые травмы и делись с друзьями',
+    subtitle: 'Отмечай свои травмы и делись с друзьями',
     selected: 'Выбрано',
     selectBoneHint: 'Кликните на кость для выбора',
     addInjury: 'Добавить травму',
@@ -39,6 +46,13 @@ export const translations = {
     editInjury: 'Редактировать травму',
     deleteInjury: 'Удалить травму',
     loadingSkeleton: 'Загрузка скелета...',
+
+    statsTitle: 'Статистика',
+    totalInjuries: 'Всего травм',
+    bonesInjured: 'Костей сломано',
+    percentInjured: 'Процент повреждений',
+    outOf: 'из',
+
     months: [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
       'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'

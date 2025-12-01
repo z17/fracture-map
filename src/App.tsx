@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Skeleton } from './components/Skeleton';
 import { InjuryForm } from './components/InjuryForm';
 import { InjuryList } from './components/InjuryList';
+import { Stats } from './components/Stats';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { useInjuries } from './hooks/useInjuries';
 import { useLanguage } from './i18n';
@@ -57,6 +58,11 @@ function App() {
               onSubmit={handleAddInjury}
             />
           )}
+
+          <Stats
+            totalInjuries={injuries.length}
+            bonesWithInjuries={bonesWithInjuries}
+          />
 
           <InjuryList
             injuries={injuries}

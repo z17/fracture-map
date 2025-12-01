@@ -1,0 +1,56 @@
+.stats {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.title {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.title::before {
+  content: '📊 ';
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  background: white;
+  border-radius: 12px;
+}
+
+.value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.outOf {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
