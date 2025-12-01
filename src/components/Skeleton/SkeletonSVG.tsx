@@ -2,34 +2,39 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useLanguage } from '../../i18n';
 import styles from './Skeleton.module.css';
 
+// Whitelist of anatomical bones/groups that can be selected
 const ANATOMICAL_BONES = new Set([
-  // Голова (3)
+  // Head
   'Skull', 'Cranium', 'Mandible',
-  // Позвоночник (5)
+  // Spine
   'CervicalVertebrae', 'ThoracicVertebrae', 'LumbarVertebrae', 'Sacrum', 'Coccyx',
-  // Грудная клетка (4)
+  // Chest
   'Sternum', 'Manubrium', 'Scapula', 'ClavicleLeft', 'ClavicleRight',
-  // Руки (6)
+  // Arms
   'HumerusLeft', 'HumerusRight',
   'RadiusLeft', 'RadiusRight',
   'UlnaLeft', 'UlnaRight',
-  // Кисти (8)
+  // Hands
   'HandLeft', 'HandRight',
   'CarpalsLeft', 'CarpalsRight',
   'MetacarpalsLeft', 'MetacarpalsRight',
   'PhalangesLeft', 'PhalangesRight',
-  // Таз (1)
+  // Pelvis
   'PelvicGirdle',
-  // Ноги (7)
+  // Legs
   'FemurLeft', 'FemurRight',
   'PatellaLeft', 'PatellaRight',
   'TibiaLeft', 'TibiaRight',
   'FibulaLeft', 'FibulaRight',
-  // Стопы (8)
+  // Feet
   'FootLeft', 'FootRight',
   'TarsalsLeft', 'TarsalsRight',
   'MetatarsalsLeft', 'MetatarsalsRight',
   'PhalangesFootLeft', 'PhalangesFootRight',
+  // Ribs
+  'Rib1',
+  'RibLeft2', 'RibLeft3', 'RibLeft4', 'RibLeft5', 'RibLeft6', 'RibLeft7', 'RibLeft8', 'RibLeft9', 'RibLeft10', 'RibLeft11', 'RibLeft12',
+  'RibRight2', 'RibRight3', 'RibRight4', 'RibRight5', 'RibRight6', 'RibRight7', 'RibRight8', 'RibRight9', 'RibRight10', 'RibRight11', 'RibRight12',
 ]);
 
 export function getBoneName(id: string): string {
