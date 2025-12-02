@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, memo } from 'react';
 import { useLanguage } from '../../i18n';
 import styles from './Skeleton.module.css';
 
@@ -47,11 +47,11 @@ interface SkeletonSVGProps {
   bonesWithInjuries: Set<string>;
 }
 
-export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
+export const SkeletonSVG: React.FC<SkeletonSVGProps> = memo(function SkeletonSVG({
   selectedBoneId,
   onBoneClick,
   bonesWithInjuries,
-}) => {
+}) {
   const { t } = useLanguage();
   const [svgContent, setSvgContent] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,12 +78,12 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
     return null;
   }, []);
 
-  const getElementGroup = useCallback((id: string): Element | null => {
+  const getElementGroup = (id: string): Element | null => {
     if (!containerRef.current) return null;
     return containerRef.current.querySelector(`#${CSS.escape(id)}`);
-  }, []);
+  };
 
-  const applyStyles = useCallback((element: Element | null, state: 'normal' | 'selected' | 'injured') => {
+  const applyStyles = (element: Element | null, state: 'normal' | 'selected' | 'injured') => {
     if (!element) return;
 
     const shapes = element.tagName === 'path' || element.tagName === 'g'
@@ -112,7 +112,7 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
         shapeEl.style.filter = '';
       }
     });
-  }, []);
+  };
 
   // Apply styles for injured bones
   useEffect(() => {
@@ -136,7 +136,8 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
         }
       }
     });
-  }, [svgContent, bonesWithInjuries, selectedBoneId, applyStyles, getElementGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [svgContent, bonesWithInjuries, selectedBoneId]);
 
   // Apply styles for selected bone
   useEffect(() => {
@@ -162,7 +163,8 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
     } else {
       selectedElementRef.current = null;
     }
-  }, [svgContent, selectedBoneId, bonesWithInjuries, applyStyles, getElementGroup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [svgContent, selectedBoneId, bonesWithInjuries]);
 
   useEffect(() => {
     if (!svgContent || !containerRef.current) return;
@@ -202,7 +204,7 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = ({
       dangerouslySetInnerHTML={{ __html: svgContent }}
     />
   );
-};
+});
 
 export default SkeletonSVG;
 

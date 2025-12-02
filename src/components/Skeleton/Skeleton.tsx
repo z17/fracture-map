@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import type { BoneId } from '../../types';
 import { SkeletonSVG } from './SkeletonSVG';
 import styles from './Skeleton.module.css';
@@ -11,21 +12,23 @@ interface SkeletonProps {
   bonesWithInjuries: Set<BoneId>;
 }
 
-export function Skeleton({ selectedBoneId, onBoneClick, bonesWithInjuries }: SkeletonProps) {
-  const handleContainerClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onBoneClick(null);
-    }
-  };
+export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
+  function Skeleton({ selectedBoneId, onBoneClick, bonesWithInjuries }, ref) {
+    const handleContainerClick = (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        onBoneClick(null);
+      }
+    };
 
-  return (
-    <div className={styles.container} onClick={handleContainerClick}>
-      <SkeletonSVG
-        selectedBoneId={selectedBoneId}
-        onBoneClick={onBoneClick}
-        bonesWithInjuries={bonesWithInjuries}
-      />
-    </div>
-  );
-}
+    return (
+      <div ref={ref} className={styles.container} onClick={handleContainerClick}>
+        <SkeletonSVG
+          selectedBoneId={selectedBoneId}
+          onBoneClick={onBoneClick}
+          bonesWithInjuries={bonesWithInjuries}
+        />
+      </div>
+    );
+  }
+);
 
