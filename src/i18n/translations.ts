@@ -25,6 +25,17 @@ export const translations = {
     percentInjured: 'Percent injured',
     outOf: 'of',
 
+    shareTitle: 'Share',
+    mapName: 'Map name',
+    mapNamePlaceholder: 'My fracture map',
+    generateLink: 'Generate link',
+    saveMap: 'Save',
+    viewLink: 'View link',
+    editLink: 'Secret edit link',
+    copy: 'Copy',
+    copied: 'Copied!',
+    downloadImage: 'Download image',
+
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -52,6 +63,17 @@ export const translations = {
     bonesInjured: 'Костей сломано',
     percentInjured: 'Процент повреждений',
     outOf: 'из',
+
+    shareTitle: 'Поделиться',
+    mapName: 'Название карты',
+    mapNamePlaceholder: 'Моя карта переломов',
+    generateLink: 'Сгенерировать ссылку',
+    saveMap: 'Сохранить',
+    viewLink: 'Ссылка для просмотра',
+    editLink: 'Секретная ссылка для редактирования',
+    copy: 'Копировать',
+    copied: 'Скопировано!',
+    downloadImage: 'Скачать изображение',
 
     months: [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',

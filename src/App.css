@@ -35,10 +35,6 @@ body {
   content: '🦴 ';
 }
 
-.app h1::after {
-  content: ' 🩹';
-}
-
 .subtitle {
   text-align: center;
   color: #6b7280;

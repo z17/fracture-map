@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Skeleton } from './components/Skeleton';
 import { InjuryForm } from './components/InjuryForm';
 import { InjuryList } from './components/InjuryList';
 import { Stats } from './components/Stats';
+import { Share } from './components/Share';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { useInjuries } from './hooks/useInjuries';
 import { useLanguage } from './i18n';
@@ -10,14 +11,23 @@ import { getBoneName } from './components/Skeleton/SkeletonSVG';
 import type { BoneId, InjuryFormData } from './types';
 import './App.css';
 
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 10);
+}
+
 function App() {
   const [selectedBoneId, setSelectedBoneId] = useState<BoneId | null>(null);
+  const [mapName, setMapName] = useState('');
   const { injuries, addInjury, removeInjury, updateInjury, bonesWithInjuries } = useInjuries();
   const { t } = useLanguage();
+  const skeletonRef = useRef<HTMLDivElement>(null);
 
-  const handleBoneClick = (boneId: BoneId | null) => {
+  const [viewId] = useState(() => generateId());
+  const [editId] = useState(() => generateId());
+
+  const handleBoneClick = useCallback((boneId: BoneId | null) => {
     setSelectedBoneId(boneId);
-  };
+  }, []);
 
   const handleAddInjury = (data: InjuryFormData) => {
     if (selectedBoneId) {
@@ -45,6 +55,7 @@ function App() {
       <div className="app-content">
         <div className="skeleton-section">
           <Skeleton
+            ref={skeletonRef}
             selectedBoneId={selectedBoneId}
             onBoneClick={handleBoneClick}
             bonesWithInjuries={bonesWithInjuries}
@@ -62,6 +73,14 @@ function App() {
           <Stats
             totalInjuries={injuries.length}
             bonesWithInjuries={bonesWithInjuries}
+          />
+
+          <Share
+            mapName={mapName}
+            onMapNameChange={setMapName}
+            viewId={viewId}
+            editId={editId}
+            skeletonContainerRef={skeletonRef}
           />
 
           <InjuryList
