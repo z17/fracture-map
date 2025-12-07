@@ -2,7 +2,7 @@ export type Language = 'en' | 'ru';
 
 export const translations = {
   en: {
-    title: 'Fracture Map',
+    title: 'Injury Map',
     subtitle: 'Mark your scars and share with friends',
     selected: 'Selected',
     selectBoneHint: 'Click on a bone to select',
@@ -27,7 +27,7 @@ export const translations = {
 
     shareTitle: 'Share',
     mapName: 'Map name',
-    mapNamePlaceholder: 'My fracture map',
+    mapNamePlaceholder: 'My injury map',
     generateLink: 'Generate link',
     saveMap: 'Save',
     viewLink: 'View link',
@@ -42,7 +42,7 @@ export const translations = {
     ],
   },
   ru: {
-    title: 'Карта переломов',
+    title: 'Карта травм',
     subtitle: 'Отмечай свои травмы и делись с друзьями',
     selected: 'Выбрано',
     selectBoneHint: 'Кликните на кость для выбора',
@@ -66,7 +66,7 @@ export const translations = {
 
     shareTitle: 'Поделиться',
     mapName: 'Название карты',
-    mapNamePlaceholder: 'Моя карта переломов',
+    mapNamePlaceholder: 'Мои травмы',
     generateLink: 'Сгенерировать ссылку',
     saveMap: 'Сохранить',
     viewLink: 'Ссылка для просмотра',

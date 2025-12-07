@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Skeleton } from './components/Skeleton';
 import { InjuryForm } from './components/InjuryForm';
 import { InjuryList } from './components/InjuryList';
@@ -24,6 +24,10 @@ function App() {
 
   const [viewId] = useState(() => generateId());
   const [editId] = useState(() => generateId());
+
+  useEffect(() => {
+    document.title = t('title');
+  }, [t]);
 
   const handleBoneClick = useCallback((boneId: BoneId | null) => {
     setSelectedBoneId(boneId);

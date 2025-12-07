@@ -9,7 +9,7 @@ export const ANATOMICAL_BONES = new Set([
   // Spine
   'CervicalVertebrae', 'ThoracicVertebrae', 'LumbarVertebrae', 'Sacrum', 'Coccyx',
   // Chest
-  'Sternum', 'Manubrium', 'Scapula', 'ClavicleLeft', 'ClavicleRight',
+  'Sternum', 'Manubrium', 'ScapulaLeft', 'ScapulaRight','ClavicleLeft', 'ClavicleRight',
   // Arms
   'HumerusLeft', 'HumerusRight',
   'RadiusLeft', 'RadiusRight',
