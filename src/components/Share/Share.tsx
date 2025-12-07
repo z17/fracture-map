@@ -8,9 +8,10 @@ interface ShareProps {
   viewId: string;
   editId: string;
   skeletonContainerRef: React.RefObject<HTMLDivElement | null>;
+  isEditMode: boolean;
 }
 
-export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContainerRef }: ShareProps) {
+export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContainerRef, isEditMode }: ShareProps) {
   const { t } = useLanguage();
   const [linksGenerated, setLinksGenerated] = useState(false);
   const [copiedView, setCopiedView] = useState(false);
@@ -69,26 +70,28 @@ export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContai
     <div className={styles.share}>
       <h3 className={styles.title}>{t('shareTitle')}</h3>
 
-      <div className={styles.field}>
-        <label className={styles.label}>{t('mapName')}</label>
-        <div className={styles.nameRow}>
-          <input
-            type="text"
-            className={styles.input}
-            value={mapName}
-            onChange={(e) => onMapNameChange(e.target.value)}
-            placeholder={t('mapNamePlaceholder')}
-          />
-          <button
-            className={styles.generateButton}
-            onClick={() => setLinksGenerated(true)}
-          >
-            {linksGenerated ? t('saveMap') : t('generateLink')}
-          </button>
+      {isEditMode && (
+        <div className={styles.field}>
+          <label className={styles.label}>{t('mapName')}</label>
+          <div className={styles.nameRow}>
+            <input
+              type="text"
+              className={styles.input}
+              value={mapName}
+              onChange={(e) => onMapNameChange(e.target.value)}
+              placeholder={t('mapNamePlaceholder')}
+            />
+            <button
+              className={styles.generateButton}
+              onClick={() => setLinksGenerated(true)}
+            >
+              {linksGenerated ? t('saveMap') : t('generateLink')}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {linksGenerated && (
+      {(linksGenerated || !isEditMode) && (
         <>
           <div className={styles.field}>
             <label className={styles.label}>{t('viewLink')}</label>
@@ -108,23 +111,25 @@ export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContai
             </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.label}>{t('editLink')}</label>
-            <div className={styles.linkRow}>
-              <input
-                type="text"
-                className={styles.linkInput}
-                value={editLink}
-                readOnly
-              />
-              <button
-                className={styles.copyButton}
-                onClick={() => copyToClipboard(editLink, 'edit')}
-              >
-                {copiedEdit ? t('copied') : t('copy')}
-              </button>
+          {isEditMode && (
+            <div className={styles.field}>
+              <label className={styles.label}>{t('editLink')}</label>
+              <div className={styles.linkRow}>
+                <input
+                  type="text"
+                  className={styles.linkInput}
+                  value={editLink}
+                  readOnly
+                />
+                <button
+                  className={styles.copyButton}
+                  onClick={() => copyToClipboard(editLink, 'edit')}
+                >
+                  {copiedEdit ? t('copied') : t('copy')}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <button
             className={styles.downloadButton}

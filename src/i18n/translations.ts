@@ -35,6 +35,7 @@ export const translations = {
     copy: 'Copy',
     copied: 'Copied!',
     downloadImage: 'Download image',
+    createNew: 'Create new',
 
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
@@ -74,6 +75,7 @@ export const translations = {
     copy: 'Копировать',
     copied: 'Скопировано!',
     downloadImage: 'Скачать изображение',
+    createNew: 'Создать новую',
 
     months: [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',

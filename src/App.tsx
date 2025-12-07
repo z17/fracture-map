@@ -15,12 +15,21 @@ function generateId(): string {
   return Math.random().toString(36).substring(2, 10);
 }
 
+function getEditModeFromUrl(): boolean {
+  const path = window.location.pathname;
+  if (path.startsWith('/edit/') || path.startsWith('/create')) {
+    return true;
+  }
+  return false;
+}
+
 function App() {
   const [selectedBoneId, setSelectedBoneId] = useState<BoneId | null>(null);
   const [mapName, setMapName] = useState('');
   const { injuries, addInjury, removeInjury, updateInjury, bonesWithInjuries } = useInjuries();
   const { t } = useLanguage();
   const skeletonRef = useRef<HTMLDivElement>(null);
+  const isEditMode = getEditModeFromUrl();
 
   const [viewId] = useState(() => generateId());
   const [editId] = useState(() => generateId());
@@ -49,6 +58,10 @@ function App() {
       </div>
       <p className="subtitle">{t('subtitle')}</p>
 
+      <button className="create-new-button" onClick={() => window.location.href = '/create'}>
+        {t('createNew')}
+      </button>
+
       <div className="selected-bone-info">
         {selectedBoneName
           ? <>{t('selected')}: <strong>{selectedBoneName}</strong></>
@@ -67,7 +80,7 @@ function App() {
         </div>
 
         <div className="sidebar">
-          {selectedBoneId && selectedBoneName && (
+          {isEditMode && selectedBoneId && selectedBoneName && (
             <InjuryForm
               boneName={selectedBoneName}
               onSubmit={handleAddInjury}
@@ -85,6 +98,7 @@ function App() {
             viewId={viewId}
             editId={editId}
             skeletonContainerRef={skeletonRef}
+            isEditMode={isEditMode}
           />
 
           <InjuryList
