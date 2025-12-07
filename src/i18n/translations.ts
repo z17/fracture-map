@@ -36,6 +36,12 @@ export const translations = {
     copied: 'Copied!',
     downloadImage: 'Download image',
     createNew: 'Create new',
+    edit: 'Edit',
+    loading: 'Loading...',
+    notFound: 'Page not found',
+    saving: 'Saving...',
+    saved: 'Saved',
+    saveError: 'Save error',
 
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
@@ -76,6 +82,12 @@ export const translations = {
     copied: 'Скопировано!',
     downloadImage: 'Скачать изображение',
     createNew: 'Создать новую',
+    edit: 'Редактирование',
+    loading: 'Загрузка...',
+    notFound: 'Страница не найдена',
+    saving: 'Сохранение...',
+    saved: 'Сохранено',
+    saveError: 'Ошибка сохранения',
 
     months: [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',

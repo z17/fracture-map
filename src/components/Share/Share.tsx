@@ -2,24 +2,42 @@ import { useState } from 'react';
 import { useLanguage } from '../../i18n';
 import styles from './Share.module.css';
 
+type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+
 interface ShareProps {
   mapName: string;
   onMapNameChange: (name: string) => void;
-  viewId: string;
-  editId: string;
+  slug: string | null;
+  editKey: string | null;
+  onCreate: () => Promise<void>;
+  saveStatus: SaveStatus;
   skeletonContainerRef: React.RefObject<HTMLDivElement | null>;
   isEditMode: boolean;
 }
 
-export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContainerRef, isEditMode }: ShareProps) {
+export function Share({ mapName, onMapNameChange, slug, editKey, onCreate, saveStatus, skeletonContainerRef, isEditMode }: ShareProps) {
   const { t } = useLanguage();
-  const [linksGenerated, setLinksGenerated] = useState(false);
   const [copiedView, setCopiedView] = useState(false);
   const [copiedEdit, setCopiedEdit] = useState(false);
 
   const baseUrl = window.location.origin;
-  const viewLink = `${baseUrl}/view/${viewId}`;
-  const editLink = `${baseUrl}/edit/${editId}`;
+  const viewLink = slug ? `${baseUrl}/view/${slug}` : '';
+  const editLink = editKey ? `${baseUrl}/edit/${editKey}` : '';
+
+  const renderSaveStatus = () => {
+    if (!editKey) return null;
+
+    switch (saveStatus) {
+      case 'saving':
+        return <span className={styles.statusSaving}>{t('saving')}</span>;
+      case 'saved':
+        return <span className={styles.statusSaved}>{t('saved')} ✓</span>;
+      case 'error':
+        return <span className={styles.statusError}>{t('saveError')}</span>;
+      default:
+        return null;
+    }
+  };
 
   const copyToClipboard = async (text: string, type: 'view' | 'edit') => {
     try {
@@ -81,17 +99,22 @@ export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContai
               onChange={(e) => onMapNameChange(e.target.value)}
               placeholder={t('mapNamePlaceholder')}
             />
-            <button
-              className={styles.generateButton}
-              onClick={() => setLinksGenerated(true)}
-            >
-              {linksGenerated ? t('saveMap') : t('generateLink')}
-            </button>
+            {!editKey ? (
+              <button
+                className={styles.generateButton}
+                onClick={onCreate}
+                disabled={saveStatus === 'saving'}
+              >
+                {saveStatus === 'saving' ? '...' : t('generateLink')}
+              </button>
+            ) : (
+              renderSaveStatus()
+            )}
           </div>
         </div>
       )}
 
-      {(linksGenerated || !isEditMode) && (
+      {slug && (
         <>
           <div className={styles.field}>
             <label className={styles.label}>{t('viewLink')}</label>
@@ -111,7 +134,7 @@ export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContai
             </div>
           </div>
 
-          {isEditMode && (
+          {isEditMode && editKey && (
             <div className={styles.field}>
               <label className={styles.label}>{t('editLink')}</label>
               <div className={styles.linkRow}>
@@ -130,15 +153,15 @@ export function Share({ mapName, onMapNameChange, viewId, editId, skeletonContai
               </div>
             </div>
           )}
-
-          <button
-            className={styles.downloadButton}
-            onClick={downloadImage}
-          >
-            {t('downloadImage')}
-          </button>
         </>
       )}
+
+      <button
+        className={styles.downloadButton}
+        onClick={downloadImage}
+      >
+        {t('downloadImage')}
+      </button>
     </div>
   );
 }

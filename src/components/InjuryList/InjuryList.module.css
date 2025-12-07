@@ -107,6 +107,7 @@
   font-size: 0.875rem;
   line-height: 1.5;
   padding-right: 3rem;
+  white-space: pre-line;
 }
 
 .actions {

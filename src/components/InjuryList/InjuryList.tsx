@@ -7,8 +7,8 @@ import styles from './InjuryList.module.css';
 interface InjuryListProps {
   injuries: Injury[];
   selectedBoneId: BoneId | null;
-  onRemove: (injuryId: string) => void;
-  onUpdate: (injuryId: string, data: InjuryFormData) => void;
+  onRemove?: (injuryId: string) => void;
+  onUpdate?: (injuryId: string, data: InjuryFormData) => void;
   onBoneSelect: (boneId: BoneId) => void;
 }
 
@@ -49,7 +49,7 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
   };
 
   const saveEditing = () => {
-    if (editingId && editDescription.trim()) {
+    if (editingId && editDescription.trim() && onUpdate) {
       onUpdate(editingId, {
         description: editDescription.trim(),
         date: toISODate(editMonth, editYear),
@@ -126,28 +126,34 @@ export function InjuryList({ injuries, selectedBoneId, onRemove, onUpdate, onBon
                   <span className={styles.date}> — {formatDate(injury.date)}</span>
                 </div>
                 {injury.description && <p className={styles.description}>{injury.description}</p>}
-                <div className={styles.actions}>
-                  <button
-                    className={styles.editButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      startEditing(injury);
-                    }}
-                    aria-label={t('editInjury')}
-                  >
-                    ✎
-                  </button>
-                  <button
-                    className={styles.removeButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRemove(injury.id);
-                    }}
-                    aria-label={t('deleteInjury')}
-                  >
-                    ✕
-                  </button>
-                </div>
+                {(onRemove || onUpdate) && (
+                  <div className={styles.actions}>
+                    {onUpdate && (
+                      <button
+                        className={styles.editButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startEditing(injury);
+                        }}
+                        aria-label={t('editInjury')}
+                      >
+                        ✎
+                      </button>
+                    )}
+                    {onRemove && (
+                      <button
+                        className={styles.removeButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemove(injury.id);
+                        }}
+                        aria-label={t('deleteInjury')}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>

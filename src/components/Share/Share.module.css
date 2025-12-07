@@ -132,3 +132,25 @@
   content: '📥 ';
 }
 
+.statusSaving {
+  font-size: 0.8rem;
+  color: #6b7280;
+  padding: 0.625rem 0.5rem;
+  white-space: nowrap;
+}
+
+.statusSaved {
+  font-size: 0.8rem;
+  color: #10b981;
+  padding: 0.625rem 0.5rem;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.statusError {
+  font-size: 0.8rem;
+  color: #ef4444;
+  padding: 0.625rem 0.5rem;
+  white-space: nowrap;
+}
+

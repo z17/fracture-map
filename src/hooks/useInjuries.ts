@@ -50,6 +50,7 @@ export function useInjuries() {
 
   return {
     injuries,
+    setInjuries,
     addInjury,
     removeInjury,
     updateInjury,
