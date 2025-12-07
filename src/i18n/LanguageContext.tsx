@@ -10,8 +10,20 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
+// Global language state for use outside React components
+let currentLanguage: Language = 'en';
+
+export function getCurrentLanguage(): Language {
+  return currentLanguage;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('en');
+
+  const setLanguage = useCallback((lang: Language) => {
+    currentLanguage = lang;
+    setLanguageState(lang);
+  }, []);
 
   const t = useCallback((key: keyof typeof translations.en): string => {
     const value = translations[language][key];

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, memo } from 'react';
-import { useLanguage } from '../../i18n';
+import { useLanguage, getCurrentLanguage, translations } from '../../i18n';
 import styles from './Skeleton.module.css';
 
 // Whitelist of anatomical bones/groups that can be selected
@@ -38,7 +38,9 @@ export const ANATOMICAL_BONES = new Set([
 ]);
 
 export function getBoneName(id: string): string {
-  return id;
+  const lang = getCurrentLanguage();
+  const bones = translations[lang].bones;
+  return (bones as Record<string, string>)[id] || id;
 }
 
 interface SkeletonSVGProps {
