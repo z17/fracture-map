@@ -52,8 +52,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const loadedDataRef = useRef<{ name: string; injuries: string } | null>(null);
 
   const { injuries, setInjuries, addInjury, removeInjury, updateInjury, bonesWithInjuries } = useInjuries();
   const { t } = useLanguage();
@@ -72,6 +72,7 @@ function App() {
           setSlug(data.slug);
         } else if (route.mode === 'edit' && route.editKey) {
           const data = await fetchMapByEditKey(route.editKey);
+          loadedDataRef.current = { name: data.name, injuries: JSON.stringify(data.injuries) };
           setMapName(data.name);
           setInjuries(data.injuries);
           setSlug(data.slug);
@@ -86,12 +87,11 @@ function App() {
 
     if (route.mode === 'create' || route.mode === 'terms') {
       setLoading(false);
-      setIsInitialLoad(false);
     } else if (route.mode === 'notFound') {
       setError('Page not found');
       setLoading(false);
     } else {
-      loadMap().then(() => setIsInitialLoad(false));
+      loadMap();
     }
   }, [route, setInjuries]);
 
@@ -160,7 +160,14 @@ function App() {
   }, [mapName, injuries]);
 
   useEffect(() => {
-    if (!editKey || isInitialLoad) return;
+    if (!editKey) return;
+
+    const currentData = { name: mapName, injuries: JSON.stringify(injuries) };
+    if (loadedDataRef.current &&
+        loadedDataRef.current.name === currentData.name &&
+        loadedDataRef.current.injuries === currentData.injuries) {
+      return;
+    }
 
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -175,7 +182,7 @@ function App() {
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [editKey, mapName, injuries, isInitialLoad, doSave]);
+  }, [editKey, mapName, injuries, doSave]);
 
   const handleBoneClick = useCallback((boneId: BoneId | null) => {
     setSelectedBoneId(boneId);
@@ -212,7 +219,7 @@ function App() {
     <div className="app">
       <div className="header">
         <a href="/create" className="header-link">
-          <img src="/icon3.png" alt="" className="header-logo" />
+          <img src="/icon.png" alt="" className="header-logo" />
           <h1>{t('title')}</h1>
         </a>
         <LanguageSwitcher />
