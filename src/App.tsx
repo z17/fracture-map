@@ -4,7 +4,9 @@ import { InjuryForm } from './components/InjuryForm';
 import { InjuryList } from './components/InjuryList';
 import { Stats } from './components/Stats';
 import { Share } from './components/Share';
+import { Footer } from './components/Footer';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { Terms } from './pages/Terms';
 import { useInjuries } from './hooks/useInjuries';
 import { useLanguage } from './i18n';
 import { getBoneName } from './components/Skeleton/SkeletonSVG';
@@ -13,7 +15,7 @@ import type { BoneId, InjuryFormData } from './types';
 import './App.css';
 
 interface RouteInfo {
-  mode: 'create' | 'edit' | 'view' | 'notFound';
+  mode: 'create' | 'edit' | 'view' | 'terms' | 'notFound';
   slug?: string;
   editKey?: string;
 }
@@ -23,6 +25,10 @@ function parseRoute(): RouteInfo {
 
   if (path === '/create' || path === '/') {
     return { mode: 'create' };
+  }
+
+  if (path === '/terms') {
+    return { mode: 'terms' };
   }
 
   const editMatch = path.match(/^\/edit\/(.+)$/);
@@ -79,7 +85,7 @@ function App() {
       }
     }
 
-    if (route.mode === 'create') {
+    if (route.mode === 'create' || route.mode === 'terms') {
       setLoading(false);
       setIsInitialLoad(false);
     } else if (route.mode === 'notFound') {
@@ -89,6 +95,10 @@ function App() {
       loadMap().then(() => setIsInitialLoad(false));
     }
   }, [route, setInjuries]);
+
+  if (route.mode === 'terms') {
+    return <Terms />;
+  }
 
   useEffect(() => {
     const appTitle = t('title');
@@ -248,6 +258,8 @@ function App() {
           />
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
