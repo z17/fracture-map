@@ -7,6 +7,7 @@
     0 4px 24px rgba(0, 0, 0, 0.06),
     0 1px 2px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.8);
+  overflow: hidden;
 }
 
 .title {
@@ -79,12 +80,15 @@
 
 .linkInput {
   flex: 1;
+  min-width: 0;
   padding: 0.5rem 0.75rem;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   font-size: 0.75rem;
   color: #6b7280;
   background: #f9fafb;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .copyButton {
@@ -109,27 +113,81 @@
   transform: translateY(0);
 }
 
-.downloadButton {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-top: 0.5rem;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
+.actionsRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   border: none;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
 }
 
 .downloadButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
 }
 
-.downloadButton::before {
-  content: '📥 ';
+.socialTelegram {
+  background: linear-gradient(135deg, #2AABEE 0%, #229ED9 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(34, 158, 217, 0.3);
+}
+
+.socialTelegram:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 158, 217, 0.4);
+}
+
+.socialWhatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+}
+
+.socialWhatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+}
+
+.socialTwitter {
+  background: linear-gradient(135deg, #1DA1F2 0%, #0d8ddb 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(29, 161, 242, 0.3);
+}
+
+.socialTwitter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.4);
 }
 
 .statusSaving {

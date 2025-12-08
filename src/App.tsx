@@ -62,7 +62,6 @@ function App() {
   const [route] = useState(() => parseRoute());
   const isEditMode = route.mode === 'create' || route.mode === 'edit';
 
-  // Load map data on mount
   useEffect(() => {
     async function loadMap() {
       try {
@@ -111,15 +110,33 @@ function App() {
     } else {
       document.title = appTitle;
     }
-  }, [t, mapName, route.mode, isEditMode, editKey]);
 
-  // Save map (debounced for auto-save)
+    if (route.mode === 'view' && mapName) {
+      const title = `${mapName} | ${appTitle}`;
+      const description = `${injuries.length} ${injuries.length === 1 ? 'injury' : 'injuries'} marked`;
+
+      const updateMeta = (property: string, content: string) => {
+        let meta = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
+        if (!meta) {
+          meta = document.querySelector(`meta[name="${property}"]`) as HTMLMetaElement;
+        }
+        if (meta) {
+          meta.setAttribute('content', content);
+        }
+      };
+
+      updateMeta('og:title', title);
+      updateMeta('og:description', description);
+      updateMeta('twitter:title', title);
+      updateMeta('twitter:description', description);
+    }
+  }, [t, mapName, route.mode, isEditMode, editKey, injuries.length]);
+
   const doSave = useCallback(async (key: string, name: string, injuriesList: typeof injuries) => {
     setSaveStatus('saving');
     try {
       await updateMap(key, { name, injuries: injuriesList });
       setSaveStatus('saved');
-      // Reset to idle after 2 seconds
       setTimeout(() => setSaveStatus('idle'), 2000);
     } catch (err) {
       setSaveStatus('error');
@@ -127,7 +144,6 @@ function App() {
     }
   }, []);
 
-  // Create new map (first save)
   const handleCreate = useCallback(async () => {
     setSaveStatus('saving');
     try {
@@ -136,7 +152,6 @@ function App() {
       setEditKey(data.editKey || null);
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus('idle'), 2000);
-      // Update URL to edit mode
       window.history.pushState({}, '', `/edit/${data.editKey}`);
     } catch (err) {
       setSaveStatus('error');
@@ -144,16 +159,13 @@ function App() {
     }
   }, [mapName, injuries]);
 
-  // Auto-save when injuries or mapName change (only if we have editKey)
   useEffect(() => {
     if (!editKey || isInitialLoad) return;
 
-    // Clear previous timeout
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
 
-    // Debounce save by 500ms
     saveTimeoutRef.current = setTimeout(() => {
       doSave(editKey, mapName, injuries);
     }, 500);
@@ -199,14 +211,19 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <h1>{t('title')}</h1>
+        <a href="/create" className="header-link">
+          <img src="/icon3.png" alt="" className="header-logo" />
+          <h1>{t('title')}</h1>
+        </a>
         <LanguageSwitcher />
       </div>
       <p className="subtitle">{t('subtitle')}</p>
 
-      <button className="create-new-button" onClick={() => window.location.href = '/create'}>
-        {t('createNew')}
-      </button>
+      {route.mode === 'view' && (
+        <button className="create-new-button" onClick={() => window.location.href = '/create'}>
+          {t('createNew')}
+        </button>
+      )}
 
       <div className="selected-bone-info">
         {selectedBoneName
@@ -233,11 +250,6 @@ function App() {
             />
           )}
 
-          <Stats
-            totalInjuries={injuries.length}
-            bonesWithInjuries={bonesWithInjuries}
-          />
-
           <Share
             mapName={mapName}
             onMapNameChange={setMapName}
@@ -247,6 +259,11 @@ function App() {
             saveStatus={saveStatus}
             skeletonContainerRef={skeletonRef}
             isEditMode={isEditMode}
+          />
+
+          <Stats
+            totalInjuries={injuries.length}
+            bonesWithInjuries={bonesWithInjuries}
           />
 
           <InjuryList

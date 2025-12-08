@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useCallback, memo } from 'react';
 import { useLanguage, getCurrentLanguage, translations } from '../../i18n';
 import styles from './Skeleton.module.css';
 
-// Whitelist of anatomical bones/groups that can be selected
 export const ANATOMICAL_BONES = new Set([
   // Head
   'Skull', 'Cranium', 'Mandible',
@@ -95,19 +94,16 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = memo(function SkeletonSVG
     shapes.forEach(shape => {
       const shapeEl = shape as SVGElement;
       if (state === 'selected') {
-        // Blue for selected
         shapeEl.style.fill = '#60a5fa';
         shapeEl.style.stroke = '#1d4ed8';
         shapeEl.style.strokeWidth = '2';
         shapeEl.style.filter = 'drop-shadow(0 0 8px rgba(37,99,235,0.6))';
       } else if (state === 'injured') {
-        // Red/orange for injured but not selected
         shapeEl.style.fill = '#f87171';
         shapeEl.style.stroke = '#dc2626';
         shapeEl.style.strokeWidth = '1.5';
         shapeEl.style.filter = '';
       } else {
-        // Normal state
         shapeEl.style.fill = '';
         shapeEl.style.stroke = '';
         shapeEl.style.strokeWidth = '';
@@ -116,11 +112,9 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = memo(function SkeletonSVG
     });
   };
 
-  // Apply styles for injured bones
   useEffect(() => {
     if (!svgContent || !containerRef.current) return;
 
-    // Reset previously injured elements
     injuredElementsRef.current.forEach(element => {
       if (element !== selectedElementRef.current) {
         applyStyles(element, 'normal');
@@ -128,7 +122,6 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = memo(function SkeletonSVG
     });
     injuredElementsRef.current.clear();
 
-    // Apply injured styles to bones with injuries (except selected one)
     bonesWithInjuries.forEach(boneId => {
       if (boneId !== selectedBoneId) {
         const element = getElementGroup(boneId);
@@ -141,7 +134,6 @@ export const SkeletonSVG: React.FC<SkeletonSVGProps> = memo(function SkeletonSVG
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [svgContent, bonesWithInjuries, selectedBoneId]);
 
-  // Apply styles for selected bone
   useEffect(() => {
     if (!svgContent || !containerRef.current) return;
 

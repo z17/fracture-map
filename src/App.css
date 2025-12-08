@@ -6,6 +6,7 @@ body {
   background: linear-gradient(135deg, #fef3e2 0%, #fce7f3 50%, #e0e7ff 100%);
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 .app {
@@ -22,6 +23,19 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.header-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.header-link:hover {
+  opacity: 0.8;
+}
+
 .app h1 {
   text-align: center;
   margin: 0;
@@ -31,8 +45,10 @@ body {
   letter-spacing: -0.02em;
 }
 
-.app h1::before {
-  content: '🦴 ';
+.header-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .subtitle {
