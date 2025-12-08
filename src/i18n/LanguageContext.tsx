@@ -10,18 +10,29 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
+const LANGUAGE_STORAGE_KEY = 'injury-map-language';
+
+function getInitialLanguage(): Language {
+  const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (stored === 'en' || stored === 'ru') {
+    return stored;
+  }
+  return 'en';
+}
+
 // Global language state for use outside React components
-let currentLanguage: Language = 'en';
+let currentLanguage: Language = getInitialLanguage();
 
 export function getCurrentLanguage(): Language {
   return currentLanguage;
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
 
   const setLanguage = useCallback((lang: Language) => {
     currentLanguage = lang;
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
     setLanguageState(lang);
   }, []);
 
