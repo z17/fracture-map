@@ -59,13 +59,12 @@ export async function createMap(req: Request, res: Response) {
     let slug = generateSlug(name || 'map');
     const editKey = generateEditKey();
     
-    // Check if slug exists, add suffix if needed
+    // Check if slug exists, add uuid suffix if needed
     let existingMap = await MapModel.findOne({ slug });
-    let suffix = 1;
     while (existingMap) {
-      slug = `${generateSlug(name || 'map')}-${suffix}`;
+      const uuid = crypto.randomUUID().slice(0, 4);
+      slug = `${generateSlug(name || 'map')}-${uuid}`;
       existingMap = await MapModel.findOne({ slug });
-      suffix++;
     }
     
     const map = new MapModel({
