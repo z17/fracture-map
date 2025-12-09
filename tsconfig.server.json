@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
-    "outDir": "./dist/server",
-    "rootDir": "./server"
+    "noEmit": true,
+    "types": ["node"]
   },
   "include": ["server/**/*"]
 }
