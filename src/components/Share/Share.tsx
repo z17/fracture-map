@@ -41,7 +41,18 @@ export function Share({ mapName, onMapNameChange, slug, editKey, onCreate, saveS
 
   const copyToClipboard = async (text: string, type: 'view' | 'edit') => {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
       if (type === 'view') {
         setCopiedView(true);
         setTimeout(() => setCopiedView(false), 2000);
