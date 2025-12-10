@@ -12,12 +12,20 @@ const LanguageContext = createContext<LanguageContextType | null>(null);
 
 const LANGUAGE_STORAGE_KEY = 'injury-map-language';
 
+function getBrowserLanguage(): Language {
+  const browserLang = navigator.language || navigator.languages?.[0] || '';
+  if (browserLang.startsWith('ru')) {
+    return 'ru';
+  }
+  return 'en';
+}
+
 function getInitialLanguage(): Language {
   const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
   if (stored === 'en' || stored === 'ru') {
     return stored;
   }
-  return 'en';
+  return getBrowserLanguage();
 }
 
 // Global language state for use outside React components

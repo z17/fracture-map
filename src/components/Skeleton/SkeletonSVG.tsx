@@ -16,8 +16,8 @@ export const ANATOMICAL_BONES = new Set([
   // Hands
   'HandLeft', 'HandRight',
   'CarpalsLeft', 'CarpalsRight',
-  'MetacarpalsLeft', 'MetacarpalsRight',
-  'PhalangesLeft', 'PhalangesRight',
+  'ThumbRight', 'ForefingerRight', 'MiddleFingerRight', 'RingFingerRight', 'LittleFingerRight',
+  'ThumbLeft', 'ForefingerLeft', 'MiddleFingerLeft', 'RingFingerLeft', 'LittleFingerLeft',
   // Pelvis
   'PelvicGirdle',
   // Legs
