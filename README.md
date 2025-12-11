@@ -4,6 +4,8 @@
 
 Mark your injuries on an interactive skeleton and share with friends.
 
+🔗 **[injury-map.fun](https://injury-map.fun/)**
+
 ## Requirements
 
 - Node.js 22+
