@@ -1,4 +1,5 @@
 import { Footer } from '../components/Footer';
+import { CookieConsent } from '../components/CookieConsent';
 import styles from './Terms.module.css';
 
 export function Terms() {
@@ -79,8 +80,9 @@ export function Terms() {
           is completely secure. Do not store sensitive medical or personal information.
         </p>
       </section>
-      
+
       <Footer />
+      <CookieConsent />
     </div>
   );
 }
