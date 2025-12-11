@@ -6,6 +6,7 @@ import { Stats } from './components/Stats';
 import { Share } from './components/Share';
 import { Footer } from './components/Footer';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { CookieConsent } from './components/CookieConsent';
 import { Terms } from './pages/Terms';
 import { useInjuries } from './hooks/useInjuries';
 import { useLanguage } from './i18n';
@@ -191,6 +192,7 @@ function App() {
   const handleAddInjury = (data: InjuryFormData) => {
     if (selectedBoneId) {
       addInjury(selectedBoneId, data);
+      setSelectedBoneId(null);
     }
   };
 
@@ -284,6 +286,7 @@ function App() {
       </div>
 
       <Footer />
+      <CookieConsent />
     </div>
   );
 }

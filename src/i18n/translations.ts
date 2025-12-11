@@ -46,6 +46,10 @@ export const translations = {
     saved: 'Saved',
     saveError: 'Save error',
 
+    cookieText: 'We use cookies to analyze site traffic and improve your experience.',
+    cookieAccept: 'Accept',
+    cookieDecline: 'Decline',
+
     months: [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -171,6 +175,10 @@ export const translations = {
     saving: 'Сохранение...',
     saved: 'Сохранено',
     saveError: 'Ошибка сохранения',
+
+    cookieText: 'Мы используем cookies для анализа трафика и улучшения сайта.',
+    cookieAccept: 'Принять',
+    cookieDecline: 'Отклонить',
 
     months: [
       'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
